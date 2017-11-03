@@ -7,7 +7,7 @@ import axios from "axios";
 import React from "react";
 import { Row, Col, Navbar } from "react-materialize";
 import ContactList from "./components/contactList";
-import ChatRoom from "./components/chat-room";
+import ChatRoom from "./components/chatRoom";
 import LoginView from "./components/loginView";
 
 //const loggedUser: User = { id: 1, email: "carl@x.com", is_online: true };
@@ -102,12 +102,11 @@ class App extends React.Component<any, State> {
     }
   }
 
-
   render() {
     const loggedUser = this.state.loggedUser;
 
     if (!loggedUser) {
-      return (<LoginView onUserConnected={ user => this.onUserConnected(user)} />)
+      return <LoginView onUserConnected={user => this.onUserConnected(user)} />;
     } else {
       return (
         <div>

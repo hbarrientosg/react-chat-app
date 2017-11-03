@@ -4,7 +4,7 @@ export type Conversation = {
   user: User
 }
 
-export type Messages = {
+export type Message = {
   message: string,
   createAt: Date,
   userId: number
