@@ -21,13 +21,13 @@ async function createMessagesTable(db) {
   await db.schema.createTable("messages", table => {
     table.increments("id").primary();
     table.bigInteger("conversation_id").notNullable();
-    table.bigInteger("user").notNullable();
-    table.timestamp("created_at");
+    table.bigInteger("created_by").notNullable();
+    table.dateTime("created_at");
     table.boolean("is_read");
     table.text("message");
 
     table.foreign("conversation_id").references("conversations.id");
-    table.foreign("user").references("users.id");
+    table.foreign("created_by").references("users.id");
   });
 }
 

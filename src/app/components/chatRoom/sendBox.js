@@ -1,28 +1,37 @@
-
 import type { User, Conversation, Message } from "../../data";
 
 import React from "react";
-import { Row, Input, Button } from "react-materialize"
+import { Row, Input, Button } from "react-materialize";
 
 type Prop = {
   onMessageSend: Message => void
-}
+};
 
 type State = {
   message: string
-}
+};
 
-class SendBox extends React.Component<Prop,any> {
+class SendBox extends React.Component<Prop, any> {
   constructor() {
     super();
     this.state = { message: "" };
   }
 
   render() {
-    return (<Row>
-      <Input s={10} label="Message" onKeyPress={e => this.onKeyPress(e)} onChange={e => this.updateMessage(e)}></Input>
-      <Button s={2} waves='light' onClick={e => this.onClickSend()}>Send</Button>
-    </Row>)
+    return (
+      <Row>
+        <Input
+          s={10}
+          label="Message"
+          onKeyPress={e => this.onKeyPress(e)}
+          onChange={e => this.updateMessage(e)}
+          value={this.state.message}
+        />
+        <Button s={2} waves="light" onClick={e => this.onClickSend()}>
+          Send
+        </Button>
+      </Row>
+    );
   }
 
   onKeyPress(event: KeyboardEvent) {
@@ -37,9 +46,13 @@ class SendBox extends React.Component<Prop,any> {
     });
   }
 
-  onClickSend(event: EventHandler) {
+  onClickSend() {
     const message = this.state.message;
-    if (message !== "")
+    if (message !== "") {
+      this.setState({ message: "" });
       this.props.onMessageSend(message);
+    }
   }
 }
+
+export default SendBox;

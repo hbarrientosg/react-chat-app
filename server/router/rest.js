@@ -2,6 +2,8 @@ import api from "../data-access";
 import { Router } from "express";
 import conversationMapper from "../mappers/conversations";
 import userMapper from "../mappers/user";
+import messagesMapper from "../mappers/messages";
+
 const router = Router();
 
 router.get('/users/:id/users', function(req, res) {
@@ -40,23 +42,22 @@ router.post('/conversations', function(req, res) {
 
 });
 
-
-/*
 router.get('/conversations/:id/messages', function(req, res) {
-  console.log(req.query)
-  res.json([
-    { id:1, email: "alice@x.com", is_online: false },
-    { id:2, email: "bob@x.com", is_online: false },
-  ])
+  const conversationId = req.params.id;
+
+  api.messages.getMessagesByConversation(conversationId)
+    .then(msgs => msgs.map(messagesMapper))
+    .then(msgs => res.json(msgs))
 });
 
 router.post('/messages', function(req, res) {
-  console.log(req.query)
-  res.json([
-    { id:1, email: "alice@x.com", is_online: false },
-    { id:2, email: "bob@x.com", is_online: false },
-  ])
+  const msg = req.body;
+
+  api.messages.createMessage(
+    msg.conversationId,
+    msg.message,
+    msg.userId)
+    .then(id => res.status(203).json(id));
 });
 
-*/
 export default router;

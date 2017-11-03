@@ -1,13 +1,18 @@
 //@flow
 export type Conversation = {
   id: number,
-  user: User
+  from: User,
+  to: User
 }
 
 export type Message = {
   message: string,
   createAt: Date,
-  userId: number
+  createBy: number
+}
+
+export type UserMessage = Message & {
+  user: User
 }
 
 export type User = {

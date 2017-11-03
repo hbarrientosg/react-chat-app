@@ -23,7 +23,7 @@ class App extends React.Component<any, State> {
     super();
 
     this.state = {
-      loggedUser: null,
+      loggedUser: loggedUser,
       activeConversation: null,
       status: {
         code: STATUS.READY,
@@ -46,17 +46,16 @@ class App extends React.Component<any, State> {
     }
   }
 
-  async fetchConversation(toUserId: number): Promise<?Conversation> {
-    const userId = this.state.loggedUser.id;
-    const response = await axios.get(`/api/users/${userId}/conversations`);
-    console.log(response.data);
+  async fetchConversation(
+    fromUserId: number,
+    toUserId: number
+  ): Promise<?Conversation> {
+    const response = await axios.get(`/api/users/${fromUserId}/conversations`);
     const result = response.data.filter(x => x.to === toUserId);
-
     return result.length ? result[0] : null;
   }
 
-  async createConversation(toId: number): Promise<number> {
-    const fromId: number = this.state.loggedUser.id;
+  async createConversation(fromId: number, toId: number): Promise<number> {
     const response = await axios.post(`/api/conversations`, {
       from: fromId,
       to: toId
@@ -65,27 +64,27 @@ class App extends React.Component<any, State> {
     return response.data;
   }
 
-  async fetchOrCreateConversation(toUser: User) {
+  async fetchOrCreateConversation(fromUser: User, toUser: User) {
     this.setState({ status: { code: STATUS.LOADING, message: null } });
 
-    const fromId = this.state.loggedUser.id;
+    const fromId = fromUser.id;
     const toId = toUser.id;
 
     let conversationId = null;
 
     try {
-      const conversation = await this.fetchConversation(toId);
-      console.log(conversation);
+      const conversation = await this.fetchConversation(fromId, toId);
       if (conversation) {
         conversationId = conversation.id;
       } else {
-        conversationId = await this.createConversation(toId);
+        conversationId = await this.createConversation(fromId, toId);
       }
 
       this.setState({
         activeConversation: {
           id: conversationId,
-          user: toUser
+          from: fromUser,
+          to: toUser
         },
         status: {
           code: STATUS.READY,
@@ -130,7 +129,10 @@ class App extends React.Component<any, State> {
   }
 
   activeConversation(user: User) {
-    this.fetchOrCreateConversation(user);
+    const loggedUser = this.state.loggedUser;
+    if (loggedUser) {
+      this.fetchOrCreateConversation(loggedUser, user);
+    }
   }
 }
 
