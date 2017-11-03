@@ -1,11 +1,17 @@
 import db from "../db";
 
-function createConversation() {
-  throw Error()
+async function createConversation(fromId, toId) {
+  await db.insert({
+    "user_1": fromId,
+    "user_2": toId
+  }).into("conversations")
+  .returning("id");
 }
 
-function getConversationByUser() {
-  throw Error()
+async function getConversationByUser(id) {
+  return await db.select().from("conversations")
+    .where({ user_1: id })
+    .orWhere({ user_2: id })
 }
 
 

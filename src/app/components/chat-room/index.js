@@ -1,27 +1,24 @@
+//@flow
 import "./chat-room.css";
-import type { User } from "../data/user";
-import type { Conversation } from "../data/conversation";
+import type { User, Conversation } from "../../data";
 
 import React from "react";
 import axios from "axios";
 import { Row, Input, Button } from "react-materialize"
 
 
-type UserProps = {
-  from: User,
-  to: User,
-  conversation: Conversation
-};
+type Props = Conversation;
 
-class ChatRoom extends React.Component<UserProps, any> {
+
+class ChatRoom extends React.Component<Props, any> {
 
   render() {
-    const toName = this.props.to.email;
+    const toName = this.props.user.email;
 
     return (
       <Row>
         <Row>
-          <h2>Chat with {toName}</h2>
+          <h5>Chat with {toName}</h5>
           <div className="chat-messages">
             <div></div>
           </div>

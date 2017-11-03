@@ -5,12 +5,12 @@ import webpackHotMiddleware from "webpack-hot-middleware";
 import webpack from "webpack";
 import config from "../webpack.config";
 import api from "./router/rest";
-
+import bodyParser from "body-parser";
 
 const isDev = process.env.NODE_ENV !== "production";
 const port = isDev ? 8555 : process.env.PORT;
 const app = express();
-
+app.use(bodyParser.json());
 app.use("/api", api);
 
 

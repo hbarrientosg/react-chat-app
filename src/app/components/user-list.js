@@ -1,32 +1,33 @@
 //@flow
 import React from "react";
 import axios from "axios";
-import type { User } from "../data/user";
-import { Collection, Preloader } from "react-materialize"
+import type { User, Status } from "../data";
+
+import { Collection, Preloader } from "react-materialize";
 import UserItem from "./user-item";
+import STATUS from "../data";
 
 type UserProps = {
-  user: User
+  user: User,
+  activeConversation: User => void
 };
 
 type State = {
-  message: string,
   userList: User[],
-  status: "LOADING" | "ERROR" | "READY"
+  status: Status
 };
-
-const STATUS = {
-  LOADING: "LOADING",
-  ERROR: "ERROR",
-  READY: "READY"
-}
-
 
 class UsersList extends React.Component<UserProps, State> {
   constructor(props: UserProps) {
     super();
     this.props = props;
-    this.state = { status: STATUS.LOADING, message: "", userList: [] };
+    this.state = {
+      userList: [],
+      status: {
+        message: null,
+        code: STATUS.LOADING
+      }
+    };
   }
 
   componentDidMount() {
@@ -39,38 +40,58 @@ class UsersList extends React.Component<UserProps, State> {
       const response = await axios.get(`/api/users/${userId}/users`);
       this.setState({
         userList: response.data,
-        status: STATUS.READY
+        status: {
+          code: STATUS.READY,
+          message: null
+        }
       });
-    } catch(ex) {
+    } catch (ex) {
       this.setState({
-        message: "Error loading users",
-        status: STATUS.ERROR
-      })
+        status: {
+          message: "Error loading users",
+          code: STATUS.ERROR
+        }
+      });
     }
   }
 
   renderUsers() {
-    const items = this.state.userList.map((user, id) => <UserItem user={user} key={id}></UserItem>)
+    const items = this.state.userList.map((user, id) => (
+      <UserItem
+        user={user}
+        key={id}
+        activeContact={user => this.activeContact(user)}
+      />
+    ));
 
-    return (<Collection>
-      {items}
-    </Collection>)
+    return <Collection>{items}</Collection>;
   }
 
   renderLoading() {
-    return <Preloader size='small'/>
+    return <Preloader size="small" />;
   }
 
   render() {
-    console.log()
-    switch (this.state.status) {
+    const code = this.state.status.code;
+    switch (code) {
       case STATUS.LOADING:
         return this.renderLoading();
       case STATUS.READY:
         return this.renderUsers();
       default:
-        throw Error('State not found');
+        throw Error("State not found");
     }
+  }
+
+  activeContact(user: User) {
+    this.setState(prevState => {
+      prevState.userList.forEach(item => {
+        item.isActive = item.id == user.id;
+      });
+
+      return prevState;
+    });
+    this.props.activeConversation(user);
   }
 }
 
