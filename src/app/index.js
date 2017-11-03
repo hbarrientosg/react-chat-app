@@ -1,17 +1,19 @@
 //@flow
+import "./app.css";
 import type { User, Conversation, Status } from "./data";
 
 import STATUS from "./data";
 import axios from "axios";
 import React from "react";
-import { Row, Col } from "react-materialize";
-import UsersList from "./components/user-list";
+import { Row, Col, Navbar } from "react-materialize";
+import ContactList from "./components/contactList";
 import ChatRoom from "./components/chat-room";
+import LoginView from "./components/loginView";
 
-const loggedUser: User = { id: 1, email: "carl@x.com", is_online: true };
+//const loggedUser: User = { id: 1, email: "carl@x.com", is_online: true };
 
 type State = {
-  loggedUser: User,
+  loggedUser: ?User,
   activeConversation: ?Conversation,
   status: Status
 };
@@ -21,7 +23,7 @@ class App extends React.Component<any, State> {
     super();
 
     this.state = {
-      loggedUser: loggedUser,
+      loggedUser: null,
       activeConversation: null,
       status: {
         code: STATUS.READY,
@@ -47,10 +49,10 @@ class App extends React.Component<any, State> {
   async fetchConversation(toUserId: number): Promise<?Conversation> {
     const userId = this.state.loggedUser.id;
     const response = await axios.get(`/api/users/${userId}/conversations`);
-    console.log(response.data)
+    console.log(response.data);
     const result = response.data.filter(x => x.to === toUserId);
 
-    return result.length? result[0]: null;
+    return result.length ? result[0] : null;
   }
 
   async createConversation(toId: number): Promise<number> {
@@ -100,18 +102,32 @@ class App extends React.Component<any, State> {
     }
   }
 
+
   render() {
-    return (
-      <Row>
-        <Col s={3}>
-          <UsersList
-            user={loggedUser}
-            activeConversation={user => this.activeConversation(user)}
-          />
-        </Col>
-        <Col s={9}>{this.renderChat()}</Col>
-      </Row>
-    );
+    const loggedUser = this.state.loggedUser;
+
+    if (!loggedUser) {
+      return (<LoginView onUserConnected={ user => this.onUserConnected(user)} />)
+    } else {
+      return (
+        <div>
+          <h3>Welcome {loggedUser.email}</h3>
+          <Row>
+            <Col s={3}>
+              <ContactList
+                user={loggedUser}
+                activeConversation={user => this.activeConversation(user)}
+              />
+            </Col>
+            <Col s={9}>{this.renderChat()}</Col>
+          </Row>
+        </div>
+      );
+    }
+  }
+
+  onUserConnected(user: User) {
+    this.setState({ loggedUser: user });
   }
 
   activeConversation(user: User) {

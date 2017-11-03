@@ -4,7 +4,7 @@ import axios from "axios";
 import type { User, Status } from "../data";
 
 import { Collection, Preloader } from "react-materialize";
-import UserItem from "./user-item";
+import ContactItem from "./contactItem";
 import STATUS from "../data";
 
 type UserProps = {
@@ -17,7 +17,7 @@ type State = {
   status: Status
 };
 
-class UsersList extends React.Component<UserProps, State> {
+class ContactList extends React.Component<UserProps, State> {
   constructor(props: UserProps) {
     super();
     this.props = props;
@@ -57,7 +57,7 @@ class UsersList extends React.Component<UserProps, State> {
 
   renderUsers() {
     const items = this.state.userList.map((user, id) => (
-      <UserItem
+      <ContactItem
         user={user}
         key={id}
         activeContact={user => this.activeContact(user)}
@@ -95,4 +95,4 @@ class UsersList extends React.Component<UserProps, State> {
   }
 }
 
-export default UsersList;
+export default ContactList;

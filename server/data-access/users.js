@@ -7,8 +7,12 @@ function updateUser() {
   throw Error();
 }
 
-async function getUsersOfId(id) {
+async function getUsersNotThis(id) {
   return await db.select().from("users").whereNot({ id: id });
+}
+
+async function getUsersByEmail(email) {
+  return await db.select().from("users").where({ email: email });
 }
 
 async function getUsers() {
@@ -18,6 +22,7 @@ async function getUsers() {
 export default {
   createUser,
   updateUser,
-  getUsersOfId,
+  getUsersNotThis,
+  getUsersByEmail,
   getUsers
 };

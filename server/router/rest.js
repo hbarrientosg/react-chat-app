@@ -1,18 +1,28 @@
 import api from "../data-access";
 import { Router } from "express";
 import conversationMapper from "../mappers/conversations";
+import userMapper from "../mappers/user";
 const router = Router();
 
 router.get('/users/:id/users', function(req, res) {
-    api.users.getUsersOfId(req.params.id)
+    api.users.getUsersNotThis(req.params.id)
+      .then(users => users.map(userMapper))
       .then(users => res.json(users));
 });
 
-/*
-router.post('/users', function(req, res) {
-  api.users.getUsers().then(res.json);
+router.get('/users', function(req, res) {
+  const email = req.query.email;
+  if (!email) {
+    api.users.getUsers()
+      .then(users => users.map(userMapper))
+      .then(users => res.json(users));
+  } else {
+    api.users.getUsersByEmail(email)
+      .then(users => users.map(userMapper))
+      .then(users => res.json(users));
+  }
+
 });
-*/
 
 router.get('/users/:id/conversations', function(req, res) {
   const fromId = parseInt(req.params.id, 10);
@@ -29,6 +39,7 @@ router.post('/conversations', function(req, res) {
     .then(id => res.status(203).json(id));
 
 });
+
 
 /*
 router.get('/conversations/:id/messages', function(req, res) {

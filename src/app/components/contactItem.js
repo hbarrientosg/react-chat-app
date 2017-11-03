@@ -8,7 +8,7 @@ type UserProps = {
   activeContact: User => void
 };
 
-class UserItem extends React.Component<UserProps, any> {
+class ContactItem extends React.Component<UserProps, any> {
   render() {
     const user = this.props.user;
     return (
@@ -22,4 +22,4 @@ class UserItem extends React.Component<UserProps, any> {
   }
 }
 
-export default UserItem;
+export default ContactItem;

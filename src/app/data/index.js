@@ -13,7 +13,7 @@ export type Messages = {
 export type User = {
   id: number,
   email: string,
-  is_online: bool,
+  isOnline: bool,
   isActive: bool
 }
 
