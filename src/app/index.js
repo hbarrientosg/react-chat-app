@@ -10,8 +10,6 @@ import ContactList from "./components/contactList";
 import ChatRoom from "./components/chatRoom";
 import LoginView from "./components/loginView";
 
-//const loggedUser: User = { id: 1, email: "carl@x.com", is_online: true };
-
 type State = {
   loggedUser: ?User,
   activeConversation: ?Conversation,
@@ -33,7 +31,7 @@ class App extends React.Component<any, State> {
   }
 
   renderNoConversation() {
-    return <div>No Active Conversation</div>;
+    return <div className="no-active-message">No Active Conversation</div>;
   }
 
   renderChat() {
@@ -108,8 +106,8 @@ class App extends React.Component<any, State> {
       return <LoginView onUserConnected={user => this.onUserConnected(user)} />;
     } else {
       return (
-        <div>
-          <h3>Welcome {loggedUser.email}</h3>
+        <div className="app-container">
+          <h3 className="app-title">Welcome <span>{loggedUser.email}</span></h3>
           <Row>
             <Col s={3}>
               <ContactList

@@ -7,6 +7,7 @@ import axios from "axios";
 import moment from "moment";
 import { Row, Input, Button } from "react-materialize";
 import SendBox from "./sendBox";
+import MessageBox from "./messageBox";
 import socket from "socket.io-client";
 
 type Props = Conversation;
@@ -16,13 +17,14 @@ type State = {
 
 class ChatRoom extends React.Component<Props, State> {
   socket: any;
+  messagesContainer: any;
 
   constructor(props: Props) {
     super();
     this.props = props;
-    this.socket = socket.connect('http://localhost:8555');
+    this.socket = socket.connect("http://localhost:8555");
     this.state = { messages: [] };
-    this.socket.on('updateMessages', ({userId}) => this.updateView(userId));
+    this.socket.on("updateMessages", ({ userId }) => this.updateView(userId));
   }
 
   componentDidMount() {
@@ -40,6 +42,7 @@ class ChatRoom extends React.Component<Props, State> {
     result = result.map((x: UserMessage) => {
       x.createAt = moment(x.createAt);
       x.user = x.createBy === from.id ? from : to;
+      x.isMe = x.createBy === from.id;
       return x;
     });
     this.setState({ messages: result });
@@ -47,13 +50,16 @@ class ChatRoom extends React.Component<Props, State> {
 
   render() {
     const toName = this.props.to.email;
-    const messages = this.state.messages.map((msg: UserMessage, index: number) => (
-      <li key={index}><b>{msg.createAt.format("DD-MM-YY HH:mm")} {msg.user.email}</b>: {msg.message}</li>
+    const messages = this.state.messages.map(msg => (
+      <MessageBox
+        key={msg.id}
+        {...msg}
+      />
     ));
     return (
       <Row>
-        <Row>
-          <h5>Chat with {toName}</h5>
+        <Row className="chat-room">
+          <h5 className="chat-room--title">{toName}</h5>
           <ul className="chat-messages">{messages}</ul>
         </Row>
         <SendBox onMessageSend={msg => this.sendMessage(msg)} />
@@ -62,7 +68,7 @@ class ChatRoom extends React.Component<Props, State> {
   }
 
   sendMessage(msg: string) {
-    this.saveMessage(msg)
+    this.saveMessage(msg);
   }
 
   async saveMessage(msg: string) {
@@ -78,14 +84,13 @@ class ChatRoom extends React.Component<Props, State> {
 
   async notify() {
     const userId = this.props.from.id;
-    this.socket.emit('sendMessage', { userId: userId });
+    this.socket.emit("sendMessage", { userId: userId });
   }
 
   updateView(userId: number) {
     const toId = this.props.to.id;
 
-    if (toId == userId)
-      this.fetchMessages(this.props)
+    if (toId == userId) this.fetchMessages(this.props);
   }
 }
 

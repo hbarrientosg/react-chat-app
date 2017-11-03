@@ -11,3 +11,22 @@
 .container .row {
   margin: 0 auto;
 }
+
+.app-container {
+  margin: auto 100px;
+}
+
+.app-title {
+  text-align: center;
+}
+.app-title > span {
+  color: #0971B2;
+}
+
+.no-active-message {
+  width: 100%;
+  text-align: center;
+  color: grey;
+  font-weight: bold;
+  margin-top: 100px;
+}

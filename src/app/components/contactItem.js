@@ -16,7 +16,7 @@ class ContactItem extends React.Component<UserProps, any> {
         active={user.isActive}
         onClick={e => this.props.activeContact(this.props.user)}
       >
-        {user.email} <Badge>1</Badge>
+        {user.email}
       </CollectionItem>
     );
   }

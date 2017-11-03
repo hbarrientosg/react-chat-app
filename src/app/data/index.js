@@ -6,13 +6,15 @@ export type Conversation = {
 }
 
 export type Message = {
+  id: number,
   message: string,
   createAt: Date,
   createBy: number
 }
 
 export type UserMessage = Message & {
-  user: User
+  user: User,
+  isMe: boolean
 }
 
 export type User = {

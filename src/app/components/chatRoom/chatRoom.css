@@ -1,3 +1,47 @@
+.chat-room {
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+}
+.chat-room--title {
+  background-color: #26a69a;
+  color: #eafaf9;
+  padding: 10px;
+  margin: 0;
+  text-align: right;
+}
 .chat-messages {
   height: 300px;
+  overflow: scroll;
+}
+
+.message {
+  margin: 2px 5px;
+}
+
+.message-item {
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  padding: 5px;
+  display: inline-block;
+  min-width: 140px;
+}
+.message-item span {
+  display: block;
+  font-size: 10px;
+  font-style: bold;
+}
+
+.message--right {
+  text-align: right;
+}
+.message--right .message-item {
+  color: #0971B2;
+}
+
+.message--left {
+  text-align: left;
+}
+
+.message--left .message-item {
+  color: #26a69a;
 }
