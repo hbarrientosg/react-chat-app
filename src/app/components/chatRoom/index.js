@@ -7,6 +7,7 @@ import axios from "axios";
 import moment from "moment";
 import { Row, Input, Button } from "react-materialize";
 import SendBox from "./sendBox";
+import socket from "socket.io-client";
 
 type Props = Conversation;
 type State = {
@@ -14,17 +15,26 @@ type State = {
 };
 
 class ChatRoom extends React.Component<Props, State> {
-  constructor() {
+  socket: any;
+
+  constructor(props: Props) {
     super();
-    this.state = { messages: [] }
+    this.props = props;
+    this.socket = socket.connect('http://localhost:8555');
+    this.state = { messages: [] };
+    this.socket.on('updateMessages', ({userId}) => this.updateView(userId));
   }
 
   componentDidMount() {
-    this.fetchMessages();
+    this.fetchMessages(this.props);
   }
 
-  async fetchMessages() {
-    const { id, from, to } = this.props;
+  componentWillReceiveProps(props: Props) {
+    this.fetchMessages(props);
+  }
+
+  async fetchMessages(props: Props) {
+    const { id, from, to } = props;
     let repsonse = await axios.get(`/api/conversations/${id}/messages`);
     let result = repsonse.data;
     result = result.map((x: UserMessage) => {
@@ -36,7 +46,7 @@ class ChatRoom extends React.Component<Props, State> {
   }
 
   render() {
-    const toName = this.props.from.email;
+    const toName = this.props.to.email;
     const messages = this.state.messages.map((msg: UserMessage, index: number) => (
       <li key={index}><b>{msg.createAt.format("DD-MM-YY HH:mm")} {msg.user.email}</b>: {msg.message}</li>
     ));
@@ -62,7 +72,20 @@ class ChatRoom extends React.Component<Props, State> {
       userId: this.props.from.id
     });
 
-    await this.fetchMessages();
+    await this.fetchMessages(this.props);
+    await this.notify();
+  }
+
+  async notify() {
+    const userId = this.props.from.id;
+    this.socket.emit('sendMessage', { userId: userId });
+  }
+
+  updateView(userId: number) {
+    const toId = this.props.to.id;
+
+    if (toId == userId)
+      this.fetchMessages(this.props)
   }
 }
 

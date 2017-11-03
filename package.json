@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "prebuild": "rimraf static",
-    "start": "nodemon index",
+    "start": "node index",
     "build": "cross-env NODE_ENV=production webpack --config ./webpack.config.js --progress --profile --colors",
     "webpack-dev-server": "./node_modules/.bin/webpack-dev-server"
   },
@@ -44,6 +44,7 @@
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
     "react-materialize": "^1.0.16",
+    "socket.io": "^2.0.4",
     "sqlite3": "^3.1.13"
   },
   "quokka": {

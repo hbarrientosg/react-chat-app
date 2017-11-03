@@ -74,7 +74,7 @@ class App extends React.Component<any, State> {
 
     try {
       const conversation = await this.fetchConversation(fromId, toId);
-      if (conversation) {
+      if (!!conversation) {
         conversationId = conversation.id;
       } else {
         conversationId = await this.createConversation(fromId, toId);
