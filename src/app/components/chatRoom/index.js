@@ -9,6 +9,7 @@ import { Row, Input, Button } from "react-materialize";
 import SendBox from "./sendBox";
 import MessageBox from "./messageBox";
 import socket from "socket.io-client";
+import ReactDom from "react-dom";
 
 type Props = Conversation;
 type State = {
@@ -33,6 +34,11 @@ class ChatRoom extends React.Component<Props, State> {
 
   componentWillReceiveProps(props: Props) {
     this.fetchMessages(props);
+  }
+
+  componentDidUpdate() {
+    var node = document.getElementsByClassName("chat-messages")[0];
+    node.scrollTop = node.scrollHeight;
   }
 
   async fetchMessages(props: Props) {
