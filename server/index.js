@@ -4,10 +4,15 @@ import webpackMiddleware from "webpack-dev-middleware";
 import webpackHotMiddleware from "webpack-hot-middleware";
 import webpack from "webpack";
 import config from "../webpack.config";
+import api from "./router/rest";
+
 
 const isDev = process.env.NODE_ENV !== "production";
 const port = isDev ? 8555 : process.env.PORT;
 const app = express();
+
+app.use("/api", api);
+
 
 if (isDev) {
   const compiler = webpack(config);
