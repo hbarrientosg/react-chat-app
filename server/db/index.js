@@ -2,6 +2,7 @@ import knex from "knex";
 import path from "path";
 import fs from "fs";
 import createTables from "./schema/createTables";
+import createUsers from "./schema/createUsers";
 
 const db = knex({
   client: "sqlite3",
@@ -12,10 +13,7 @@ const db = knex({
 
 async function init() {
   await createTables(db);
-  await db.insert(
-    [{ email: "alice@x.com", is_online: false },
-     { email: "bob@x.com", is_online: false },
-     { email: "carl@x.com", is_online: false }]).into("users");
+  await createUsers(db);
 };
 
 init();
