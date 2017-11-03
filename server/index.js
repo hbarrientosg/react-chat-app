@@ -10,7 +10,7 @@ import bodyParser from "body-parser";
 import socketIO from "socket.io";
 
 const isDev = process.env.NODE_ENV !== "production";
-const port = isDev ? 8555 : process.env.PORT;
+const port = 8555;
 const app = express();
 app.use(bodyParser.json());
 app.use("/api", api);
@@ -39,9 +39,9 @@ if (isDev) {
     res.end();
   });
 } else {
-  app.use(express.static(__dirname + "/static"));
+  app.use(express.static(path.join(__dirname, "../static")));
   app.get("*", function response(req, res) {
-    res.sendFile(path.join(__dirname, "/static/index.html"));
+    res.sendFile(path.join(__dirname, "../static/index.html"));
   });
 }
 

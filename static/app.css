@@ -1,0 +1,87 @@
+.container  {
+  display: flex;
+  margin-top: 100px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.container .row {
+  margin: 0 auto;
+}
+
+.app-container {
+  margin: auto 100px;
+}
+
+.app-title {
+  text-align: center;
+}
+.app-title > span {
+  color: #0971B2;
+}
+
+.no-active-message {
+  width: 100%;
+  text-align: center;
+  color: grey;
+  font-weight: bold;
+  margin-top: 100px;
+}
+.chat-room {
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+}
+.chat-room--title {
+  background-color: #26a69a;
+  color: #eafaf9;
+  padding: 10px;
+  margin: 0;
+  text-align: right;
+}
+.chat-messages {
+  height: 300px;
+  overflow: scroll;
+}
+
+.message {
+  margin: 2px 5px;
+}
+
+.message-item {
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+  padding: 5px;
+  display: inline-block;
+  min-width: 140px;
+}
+.message-item span {
+  display: block;
+  font-size: 10px;
+  font-style: bold;
+}
+
+.message--right {
+  text-align: right;
+}
+.message--right .message-item {
+  color: #0971B2;
+}
+
+.message--left {
+  text-align: left;
+}
+
+.message--left .message-item {
+  color: #26a69a;
+}
+.login-view button {
+  margin-top: 30px;
+}
+.login-view label {
+  width: 100%;
+}
+
+/*# sourceMappingURL=app.css.map*/

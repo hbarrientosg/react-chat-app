@@ -5,9 +5,8 @@
   "main": "index.js",
   "scripts": {
     "prebuild": "rimraf static",
-    "start": "node index",
-    "build": "cross-env NODE_ENV=production webpack --config ./webpack.config.js --progress --profile --colors",
-    "webpack-dev-server": "./node_modules/.bin/webpack-dev-server"
+    "start": "cross-env NODE_ENV=production node index",
+    "build": "cross-env NODE_ENV=production webpack --config ./webpack.config.js --progress --profile --colors"
   },
   "repository": {
     "type": "git",
