@@ -23,7 +23,7 @@ class App extends React.Component<any, State> {
     super();
 
     this.state = {
-      loggedUser: loggedUser,
+      loggedUser: null,
       activeConversation: null,
       status: {
         code: STATUS.READY,
