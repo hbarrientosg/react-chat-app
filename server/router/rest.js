@@ -15,6 +15,10 @@ router.get('/users', function(req, res) {
         .then(users => res.json(users));
   }
 });
+router.get('/users/:id/users', function(req, res) {
+    api.users.getUsersOfId(req.params.id)
+      .then(users => res.json(users));
+});
 
 /*
 router.post('/users', function(req, res) {

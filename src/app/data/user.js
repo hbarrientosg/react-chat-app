@@ -2,6 +2,6 @@
 
 export type User = {
   id: number,
-  email: "string",
+  email: string,
   is_online: bool
 }
